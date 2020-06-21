@@ -1,0 +1,30 @@
+.header {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.createBoard {
+  display: inline-block;
+  padding: 0 30%;
+}
+.boardInput {
+  padding: 0px 5%;
+}
+.inputElement {
+  width: 100%;
+  border-radius: 2px;
+}
+
+@media only screen and (max-width:500px){
+  .createBoard{
+   
+    padding: 0%;
+  }
+  
+  
+  .inputElement {
+   
+    border: 1px solid black;
+  }
+  
+}
+

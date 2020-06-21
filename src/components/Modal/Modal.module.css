@@ -1,0 +1,35 @@
+.modalTitle {
+  padding-top: 1%;
+  padding-left: 0%;
+  padding-right: 80%;
+}
+
+.addColumnInput {
+  padding-left: 5%;
+  display: flex;
+  justify-content: space-between;
+}
+.inputBox {
+  width: 70%;
+  height: 20%;
+  border: 1px solid black;
+}
+
+.cardFormContainer{
+  margin-left: 5%;
+  margin-right: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  
+}
+ .cardInputTitle{
+  padding-left: 0%;
+ 
+}
+
+.cardInputBox{
+  width: 100%;
+ 
+}
+

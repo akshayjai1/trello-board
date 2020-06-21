@@ -1,0 +1,38 @@
+.header {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.boardContainer {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.boardList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-row-gap: 30px;
+  grid-column-gap: 10px;
+  text-align: center;
+}
+.boardItem {
+  text-transform: none;
+  border: 1px solid black;
+  padding: 10%;
+
+  border-radius: 5px;
+  background-color: lightcyan;
+  box-shadow: 4px 4px gray;
+}
+.boardItem:hover {
+  margin: 5px;
+  background-color: thistle;
+}
+.boardHeader {
+  text-decoration: none;
+  color: black;
+}
+@media only screen and (max-width: 500px) {
+  .boardList {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,11 @@
+.addColumnBox{
+    border: 1px dashed black;
+    padding: 20%;
+    width: 60%;
+    margin-left: 5%;
+    align-self: flex-start;
+}
+.addColumnBox:hover{
+    cursor: pointer;
+    border: 2px dashed black;
+}
