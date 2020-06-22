@@ -1,0 +1,73 @@
+GET https://ga01-5e4a4.firebaseio.com/stocks.json
+
+###
+GET https://ga01-5e4a4.firebaseio.com/ga01-5e4a4/trello-board/boards.json
+
+### 
+PUT https://ga01-5e4a4.firebaseio.com/trello-board.json
+Content-Type: application/json
+
+{
+    "boards":[1]
+}
+### 
+PUT https://ga01-5e4a4.firebaseio.com/ga01-5e4a4/trello-board.json
+Content-Type: application/json
+
+{
+    "boards":[]
+}
+
+###
+ga01-5e4a4
+
+{
+  "name": "-MALIJzQY56uI2ejILWR"
+}
+
+
+### 
+GET https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
+
+
+
+### 
+POST https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
+Content-Type: application/json
+
+{
+    "buydate": "2020-05-09",
+  "buyprice": "800",
+  "isUser": true,
+  "name": "Amazon.com Inc",
+  "shares": "25",
+  "symbol": "AMZN"
+}
+
+
+
+### 
+PATCH https://ga01-5e4a4.firebaseio.com/stocks/AMZN3.json
+Content-Type: application/json
+
+{
+    "buydate": "2020-05-09",
+  "buyprice": "101",
+  "isUser": true,
+  "name": "Amazon.com Inc",
+  "shares": "25",
+  "symbol": "AMZN"
+}
+
+
+### 
+PATCH https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
+Content-Type: application/json
+
+{
+    "buydate": "2020-05-09",
+  "buyprice": "200",
+  "name": "Amazon.com Inc",
+  "shares": "25",
+  "symbol": "AMZN"
+}

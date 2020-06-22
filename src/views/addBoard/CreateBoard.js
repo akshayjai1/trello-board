@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import style from "./CreateBoard.module.css";
-//import {addBoard} from '../../utilities/firebaseData';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
