@@ -67,7 +67,7 @@ export const AddCardForm = (props) => {
       //  if user wants to add a new card
       else {
         try {
-          const result = await db.ref(`/trello/cards`).push({
+          const result = await db.ref(`/trello/cards/${boardId}`).push({
             cardTitle: cardTitle,
             team: team,
             descrptn: descrptn,

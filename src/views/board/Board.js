@@ -23,6 +23,7 @@ const Board = (props) => {
   const [isColumnDelete, setIsColumnDelete] = useState(false);
   const history = useHistory();
   const [board, setBoard] = useState({});
+  const [columnIdForAddCard, setColumnIdForAddCard] = useState('');
 
   // to set board title
   useEffect(() => {
@@ -31,7 +32,6 @@ const Board = (props) => {
   const getBoardData = (boardId) => {
     db.ref(`trello/boards/${boardId}`).on('value', function (snapshot) {
       var childData = snapshot.val();
-      debugger;
       setBoard(childData ?? {});
       setIsLoading(false);
       console.log(childData);
@@ -53,7 +53,6 @@ const Board = (props) => {
     // to get column details from firebase
     db.ref(`/trello/columns/${boardId}`).on('value', function (snapshot) {
       var childData = snapshot.val();
-      debugger;
       setColumns(Object.entries(childData ?? {}));
       setIsLoading(false);
       console.log(childData);
@@ -129,6 +128,7 @@ const Board = (props) => {
   };
   const closeModal = () => setIsModalVisible(false);
   const renderColumn = (item) => {
+    const columnId = item[0];
     return (
       <div className={styles.columnItem} key={item[0]}>
         <ColumnHeader
@@ -156,7 +156,10 @@ const Board = (props) => {
         <button
           id="addCardBox"
           className={CardStyles.addCardBox}
-          onClick={() => setIsModalVisible(true)}
+          onClick={() => {
+            setColumnIdForAddCard(columnId);
+            setIsModalVisible(true);
+          }}
           // onDragOver={allowDrop}
         >
           Add a card
@@ -195,7 +198,12 @@ const Board = (props) => {
         </div>
       )}
       <Modal isModalVisible={isModalVisible} closeModal={closeModal}>
-        <AddCardForm closeForm={closeModal} boardId={boardId} board={board} />
+        <AddCardForm
+          closeForm={closeModal}
+          boardId={boardId}
+          board={board}
+          columnId={columnIdForAddCard}
+        />
       </Modal>
     </div>
   );

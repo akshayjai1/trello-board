@@ -20,6 +20,7 @@ export const ACard = (props) => {
     getCards();
   }, []);
   const renderCard = (card) => {
+    debugger;
     return (
       <div
         className={styles.cardHeader}

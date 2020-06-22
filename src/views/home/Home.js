@@ -29,7 +29,6 @@ function Home() {
       setIsLoading(false);
       console.log(childData);
 
-      debugger;
       // snapshot.forEach((childSnapshot) => {
       //   console.log('childSnapshot is ', childSnapshot);
       //   debugger;
@@ -38,7 +37,6 @@ function Home() {
     });
   };
   const renderBoard = (board) => {
-    debugger;
     return (
       <Link
         to={{
