@@ -20,7 +20,7 @@ function CreateBoard() {
         'Board Name and members fields are important!!';
     } else {
       try {
-        const res = await db.ref('trel').push({
+        const res = await db.ref('trello/boards').push({
           boardName: boardName,
           members: members,
           boardType: type,

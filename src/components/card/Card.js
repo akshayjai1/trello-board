@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import styles from "./Card.module.css";
-import modalStyles from "../Modal/Modal.module.css";
-import { Modal } from "../Modal/Modal";
-import Axios from "axios";
+import React, { useState, useEffect } from 'react';
+import styles from './Card.module.css';
+import modalStyles from '../Modal/Modal.module.css';
+import { Modal } from '../Modal/Modal';
+import Axios from 'axios';
 
 function Card(props) {
   const [showModal, setShowModal] = useState(false);
   const { members, columnId, boardId, boardTitle, isCardDragged } = props;
   // to split members list string into array
-  const memberArr = members.split(",");
+  const memberArr = members.split(',');
 
   const [isCardAdded, setIsCardAdded] = useState(false);
   const [isCardDelete, setIsCardDelete] = useState(false);
   const [isCardEdited, setIsCardEdited] = useState(false);
   // card states
-  const [cardTitle, setCardTitle] = useState("");
+  const [cardTitle, setCardTitle] = useState('');
   const [team, setTeam] = useState([]);
-  const [descrptn, setDescrptn] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [descrptn, setDescrptn] = useState('');
+  const [dueDate, setDueDate] = useState('');
   //const [showCard, setShowCard] = useState(false);
 
   // to get column data
@@ -25,22 +25,22 @@ function Card(props) {
 
   // to handle details of card
   const [showDetails, setShowDetails] = useState(false);
-  const [cardName, setCardName] = useState("");
-  const [descDetails, setDescDetails] = useState("");
-  const [dateDetails, setDateDetails] = useState("");
+  const [cardName, setCardName] = useState('');
+  const [descDetails, setDescDetails] = useState('');
+  const [dateDetails, setDateDetails] = useState('');
   const [teamDetail, setTeamDetails] = useState([]);
   const [editDetails, setEditDetails] = useState(false);
-  const [cardId, setCardId] = useState("");
+  const [cardId, setCardId] = useState('');
 
   // to get today's date iin yyyy-mm-dd format
   var today = new Date();
   var month,
     day = null;
   if (today.getMonth() < 10 || today.getDate() < 10) {
-    month = "0" + (today.getMonth() + 1);
-    day = "0" + today.getDate();
+    month = '0' + (today.getMonth() + 1);
+    day = '0' + today.getDate();
   }
-  var date = today.getFullYear() + "-" + month + "-" + day;
+  var date = today.getFullYear() + '-' + month + '-' + day;
 
   useEffect(() => {
     setIsCardAdded(false);
@@ -62,35 +62,35 @@ function Card(props) {
         //   setShowCard(false);
         // }
       })
-      .catch((err) => console.log("Error in getCardData" + err));
+      .catch((err) => console.log('Error in getCardData' + err));
   };
 
   //  to handle add card modal click
   const handleAddCardClick = (e) => {
     //   check if all input is taken
     if (
-      (cardTitle === "" || descrptn === "" || dueDate === "") &&
+      (cardTitle === '' || descrptn === '' || dueDate === '') &&
       editDetails === false
     ) {
-      document.getElementById("cardInputError").innerHTML =
-        "<strong>Note</strong>: All the fields are required!!!";
+      document.getElementById('cardInputError').innerHTML =
+        '<strong>Note</strong>: All the fields are required!!!';
     } else {
       // if user wants to edit then put request is used
       if (editDetails) {
         Axios.put(
           `https://ga01-5e4a4.firebaseio.com//boardContents/${boardId}/column/${columnId}/card/${cardId}.json`,
           {
-            cardTitle: cardTitle === "" ? cardName : cardTitle,
+            cardTitle: cardTitle === '' ? cardName : cardTitle,
             team: team.length === 0 ? teamDetail : team,
-            descrptn: descrptn === "" ? descDetails : descrptn,
-            dueDate: dueDate === "" ? dateDetails : dueDate,
+            descrptn: descrptn === '' ? descDetails : descrptn,
+            dueDate: dueDate === '' ? dateDetails : dueDate,
           }
         )
           .then((res) => {
-            alert("card edited succesfully");
+            alert('card edited succesfully');
             setIsCardEdited(true);
           })
-          .catch((err) => console.log("Error in editDetails" + err));
+          .catch((err) => console.log('Error in editDetails' + err));
       }
       //  if user wants to add a new card
       else {
@@ -104,21 +104,21 @@ function Card(props) {
           }
         )
           .then((res) => {
-            alert("card added succesfully");
+            alert('card added succesfully');
             // call new card
             // getCardData();
             setIsCardAdded(true);
           })
-          .catch((err) => console.log("Error" + err));
+          .catch((err) => console.log('Error' + err));
       }
 
       setShowModal(false);
       setEditDetails(false);
 
-      setCardTitle("");
+      setCardTitle('');
       setTeam([]);
-      setDescrptn("");
-      setDueDate("");
+      setDescrptn('');
+      setDueDate('');
     }
   };
 
@@ -152,10 +152,10 @@ function Card(props) {
       `https://ga01-5e4a4.firebaseio.com//boardContents/${boardId}/column/${columnId}/card/${cardId}.json`
     )
       .then((res) => {
-        alert("card archived succesfully");
+        alert('card archived succesfully');
         setIsCardDelete(true);
       })
-      .catch((err) => console.log("Error" + err));
+      .catch((err) => console.log('Error' + err));
 
     setShowDetails(false);
   };
@@ -172,8 +172,8 @@ function Card(props) {
       cardData: itemData,
     };
 
-    e.dataTransfer.setData("text/plain", JSON.stringify(draggedCard));
-    console.log(e.dataTransfer.getData("text/plain"));
+    e.dataTransfer.setData('text/plain', JSON.stringify(draggedCard));
+    console.log(e.dataTransfer.getData('text/plain'));
   };
 
   const allowDrop = (e) => {
@@ -201,8 +201,7 @@ function Card(props) {
                   )
                 }
                 draggable="true"
-                onDragStart={(e) => drag(item[1], item[0], e)}
-              >
+                onDragStart={(e) => drag(item[1], item[0], e)}>
                 {item[1].cardTitle}
                 <div className={styles.cardContent}>
                   <div>
@@ -230,23 +229,21 @@ function Card(props) {
         id="addCardBox"
         className={styles.addCardBox}
         onClick={() => setShowModal(true)}
-        onDragOver={allowDrop}
-      >
+        onDragOver={allowDrop}>
         Add a card
       </button>
       <br />
       {showModal && (
-        <Modal flag={"addCard"}>
+        <Modal flag={'addCard'}>
           <button
             type="button"
             className="close"
             data-dismiss="modal"
-            style={{ width: "5%", height: "10%" }}
+            style={{ width: '5%', height: '10%' }}
             onClick={() => {
               setShowModal(false);
               setEditDetails(false);
-            }}
-          >
+            }}>
             &times;
           </button>
           <h5 className={modalStyles.modalTitle}>Add Card</h5>
@@ -259,10 +256,9 @@ function Card(props) {
               id="title"
               type="text"
               className={modalStyles.cardInputBox}
-              defaultValue={editDetails ? cardName : ""}
+              defaultValue={editDetails ? cardName : ''}
               placeholder="e.g. Add a new icon"
-              onChange={(e) => setCardTitle(e.target.value)}
-            ></input>
+              onChange={(e) => setCardTitle(e.target.value)}></input>
             <br />
 
             <label htmlFor="members" className={modalStyles.cardInputTitle}>
@@ -271,11 +267,10 @@ function Card(props) {
             <select
               id="membersList"
               name="membersList"
-              defaultValue={editDetails ? teamDetail : ""}
+              defaultValue={editDetails ? teamDetail : ''}
               className={modalStyles.cardInputBox}
               multiple
-              onChange={onSelectChange}
-            >
+              onChange={onSelectChange}>
               {memberArr.map((item) => (
                 <option value={item} key={item}>
                   {item}
@@ -291,10 +286,9 @@ function Card(props) {
               id="description"
               type="text"
               className={modalStyles.cardInputBox}
-              defaultValue={editDetails ? descDetails : ""}
+              defaultValue={editDetails ? descDetails : ''}
               placeholder="Add your description here"
-              onChange={(e) => setDescrptn(e.target.value)}
-            ></input>
+              onChange={(e) => setDescrptn(e.target.value)}></input>
             <br />
 
             <label htmlFor="due_date" className={modalStyles.cardInputTitle}>
@@ -305,34 +299,31 @@ function Card(props) {
               type="date"
               min={date}
               className={modalStyles.cardInputBox}
-              defaultValue={editDetails ? dateDetails : ""}
-              onChange={(e) => setDueDate(e.target.value)}
-            ></input>
+              defaultValue={editDetails ? dateDetails : ''}
+              onChange={(e) => setDueDate(e.target.value)}></input>
             <br />
 
             <button
               id="CreateCard"
               className="btn btn-primary"
-              onClick={handleAddCardClick}
-            >
+              onClick={handleAddCardClick}>
               Add Card
             </button>
             <br />
           </div>
-          <div id="cardInputError" style={{ color: "red" }}></div>
+          <div id="cardInputError" style={{ color: 'red' }}></div>
         </Modal>
       )}
       <br />
       {showDetails && (
-        <Modal>
+        <Modal closeModal={() => setShowDetails(false)}>
           <div>
             <button
               type="button"
               className="close"
               data-dismiss="modal"
-              style={{ width: "5%" }}
-              onClick={() => setShowDetails(false)}
-            >
+              style={{ width: '5%' }}
+              onClick={() => setShowDetails(false)}>
               &times;
             </button>
             <div className={styles.cardDetailContainer}>
@@ -343,17 +334,15 @@ function Card(props) {
                     type="button"
                     id="editBtn"
                     className="btn btn-primary"
-                    onClick={handleEdit}
-                  >
+                    onClick={handleEdit}>
                     Edit
                   </button>
                   <button
                     type="button"
                     id="archiveBtn"
-                    style={{ marginLeft: "10px" }}
+                    style={{ marginLeft: '10px' }}
                     className="btn btn-danger"
-                    onClick={handleArchive}
-                  >
+                    onClick={handleArchive}>
                     Archive
                   </button>
                 </div>

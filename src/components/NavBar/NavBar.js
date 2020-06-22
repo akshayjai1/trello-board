@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./NavBar.module.css";
-import { NavLink, Link } from "react-router-dom";
+import React from 'react';
+import styles from './NavBar.module.css';
+import { NavLink, Link } from 'react-router-dom';
 
 function NavBar() {
   return (
@@ -17,8 +17,8 @@ function NavBar() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/createboard" activeClassName={styles.active}>
-            Create a board{" "}
+          <NavLink to="/createBoard" activeClassName={styles.active}>
+            Create a board{' '}
           </NavLink>
         </li>
       </ul>
