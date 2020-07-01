@@ -32,7 +32,7 @@ GET https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
 
 
 ### 
-POST https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
+PUT https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
 Content-Type: application/json
 
 {
@@ -44,6 +44,13 @@ Content-Type: application/json
   "symbol": "AMZN"
 }
 
+### 
+PATCH   https://ga01-5e4a4.firebaseio.com/stocks/AMZN.json
+Content-Type: application/json
+
+{
+  "buyprice": "500"
+}
 
 
 ### 
@@ -70,4 +77,15 @@ Content-Type: application/json
   "name": "Amazon.com Inc",
   "shares": "25",
   "symbol": "AMZN"
+}
+
+
+###
+POST https://ga01-5e4a4.firebaseio.com/trello/boards.json
+Content-Type: application/json
+
+{
+  "boardName":"Bless",
+  "boardType":"Design",
+  "members": "Z,X,Y"
 }

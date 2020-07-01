@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
-import styles from './Board.module.css';
-import Axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { withRouter, useHistory } from "react-router-dom";
+import styles from "./Board.module.css";
+import Axios from "axios";
 
-import { AddColumnForm } from '../../components/addColumn/AddColumnForm';
-import Card from '../../components/card/Card';
-import Loader from '../../common/loader/Loader';
-import { db } from '../../service/firebase';
-import { ACard } from '../../components/card/ACard';
-import { ColumnHeader } from '../../components/addColumn/ColumnHeader';
-import CardStyles from '../../components/card/Card.module.css';
-import { Modal } from '../../common/Modal/Modal';
-import { AddCardForm } from '../../components/card/AddCardForm';
+import { AddColumnForm } from "../../components/addColumn/AddColumnForm";
+import Card from "../../components/card/Card";
+import Loader from "../../common/loader/Loader";
+import { db } from "../../service/firebase";
+import { ACard as CardList } from "../../components/card/ACard";
+import { ColumnHeader } from "../../components/addColumn/ColumnHeader";
+import CardStyles from "../../components/card/Card.module.css";
+import { Modal } from "../../common/Modal/Modal";
+import { AddCardForm } from "../../components/card/AddCardForm";
 const Board = (props) => {
   const { boardId } = props.match?.params ?? {};
+  debugger;
   // const { members, boardName } = props.location?.state ?? {};
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [columns, setColumns] = useState([]);
@@ -23,21 +24,22 @@ const Board = (props) => {
   const [isColumnDelete, setIsColumnDelete] = useState(false);
   const history = useHistory();
   const [board, setBoard] = useState({});
-  const [columnIdForAddCard, setColumnIdForAddCard] = useState('');
+  const [columnIdForAddCard, setColumnIdForAddCard] = useState("");
 
   // to set board title
   useEffect(() => {
-    document.title = boardName + ' | Pro Organizer';
+    document.title = boardName + " | Pro Organizer";
   }, []);
   const getBoardData = (boardId) => {
-    db.ref(`trello/boards/${boardId}`).on('value', function (snapshot) {
+    db.ref(`trello/boards/${boardId}`).on("value", function (snapshot) {
       var childData = snapshot.val();
       setBoard(childData ?? {});
       setIsLoading(false);
       console.log(childData);
     });
   };
-  const { members = '', boardName = '' } = board;
+  const { members = "", boardName = "" } = board;
+
   useEffect(() => {
     getBoardData(boardId);
   }, [boardId]);
@@ -51,79 +53,41 @@ const Board = (props) => {
 
   const getColumnData = () => {
     // to get column details from firebase
-    db.ref(`/trello/columns/${boardId}`).on('value', function (snapshot) {
+    db.ref(`/trello/columns/${boardId}`).on("value", function (snapshot) {
       var childData = snapshot.val();
       setColumns(Object.entries(childData ?? {}));
       setIsLoading(false);
       console.log(childData);
     });
-    // Axios.get(
-    //   `https://ga01-5e4a4.firebaseio.com//boardContents/${boardId}/column.json`
-    // )
-    //   .then((res) => {
-    //     setColumns(res.data);
-    //     setIsLoading(false);
-
-    //     // if (Object.keys(columnData).length > 0) {
-    //     //   setShowColumn(true);
-    //     // } else {
-    //     //   setShowColumn(false);
-    //     // }
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   // handle column delete
 
   // handle board delete
   const handleBoardDelete = (e) => {
-    if (window.confirm('Are you sure you want to delete the board?')) {
+    if (window.confirm("Are you sure you want to delete the board?")) {
       Axios.delete(
         `https://ga01-5e4a4.firebaseio.com//boardContents/${props.location.state.boardId}.json`
       )
         .then((res) => {
-          alert('board deleted succesfully');
-          history.push('/');
+          alert("board deleted succesfully");
+          history.push("/");
         })
-        .catch((err) => console.log('Error' + err));
+        .catch((err) => console.log("Error" + err));
     }
   };
   //  handle card drop
-  const handleCardDrop = (droppedColumnId, e) => {
+  const handleCardDrop = async (droppedColumnId, e) => {
     e.preventDefault();
-    var droppedCardData = JSON.parse(e.dataTransfer.getData('text/plain'));
-    console.log(droppedCardData);
-
-    const prevColId = droppedCardData.columnId;
-    const prevCardId = droppedCardData.dragCardId;
-    const draggedCardData = droppedCardData.cardData;
-
-    if (draggedCardData !== null) {
-      //   // Delete from previous column
-      Axios.delete(
-        `https://ga01-5e4a4.firebaseio.com//boardContents/${boardId}/column/${prevColId}/card/${prevCardId}.json`
-      )
-        .then((res) => {
-          console.log('card removed');
-        })
-        .catch((err) => console.log('Error' + err));
-
-      // Add card to new column
-      Axios.post(
-        `https://ga01-5e4a4.firebaseio.com//boardContents/${boardId}/column/${droppedColumnId}/card.json`,
-        {
-          cardTitle: draggedCardData.cardTitle,
-          team: draggedCardData.team,
-          descrptn: draggedCardData.descrptn,
-          dueDate: draggedCardData.dueDate,
-        }
-      )
-        .then((res) => {
-          console.log('card added in new column');
-          // call new card
-        })
-        .catch((err) => console.log('Error' + err));
-      setIsCardDragged(true);
+    var droppedCardData = JSON.parse(e.dataTransfer.getData("text/plain"));
+    const { cardId } = droppedCardData;
+    try {
+      const result = await db.ref(`/trello/cards/${boardId}/${cardId}`).update({
+        columnId: droppedColumnId,
+      });
+      console.log("successfully transferred card to new column", result);
+    } catch (err) {
+      console.log("Got error while transferring card", err);
     }
   };
   const closeModal = () => setIsModalVisible(false);
@@ -144,8 +108,9 @@ const Board = (props) => {
           onDragOver={(e) => {
             e.preventDefault();
             console.log(e.target);
-          }}>
-          <ACard boardId={boardId} />
+          }}
+        >
+          <CardList boardId={boardId} columnId={columnId} />
           {/* <Card
             members={members}
             columnId={item[0]}
@@ -181,7 +146,8 @@ const Board = (props) => {
             <button
               className={styles.deleteBoardBtn}
               type="button"
-              onClick={handleBoardDelete}>
+              onClick={handleBoardDelete}
+            >
               Delete Board
             </button>
           </div>
@@ -193,7 +159,8 @@ const Board = (props) => {
             <AddColumnForm
               boardName={boardName}
               boardId={boardId}
-              setShowColumn={setShowColumn}></AddColumnForm>
+              setShowColumn={setShowColumn}
+            ></AddColumnForm>
           </div>
         </div>
       )}

@@ -1,24 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { RenderArray } from '../../common/RenderArray';
-import styles from './Card.module.css';
-import { db } from '../../service/firebase';
+import React, { useState, useEffect } from "react";
+import { RenderArray } from "../../common/RenderArray";
+import styles from "./Card.module.css";
+import { db } from "../../service/firebase"; //named export
 export const ACard = (props) => {
-  const { boardId } = props;
+  const { boardId, columnId } = props;
   const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  const getCards = async () => {
-    db.ref(`/trello/cards/${boardId}`).on('value', function (snapshot) {
-      var childData = snapshot.val();
-      debugger;
-      setCards(Object.entries(childData ?? {}));
-      setIsLoading(false);
-      console.log(childData);
-    });
+  const getCards = async (boardId) => {
+    db.ref(`/trello/cards/${boardId}`)
+      .orderByChild("columnId")
+      .equalTo(columnId)
+      .on("value", function (snapshot) {
+        var childData = snapshot.val();
+        debugger;
+        setCards(Object.entries(childData ?? {}));
+        // setIsLoading(false);
+        console.log(childData);
+      });
   };
   useEffect(() => {
-    getCards();
-  }, []);
+    getCards(boardId);
+  }, [boardId]);
+  const drag = (itemData, dragCardId, e) => {
+    var draggedCard = {
+      initialColumnId: columnId,
+      cardId: dragCardId,
+      cardData: itemData,
+    };
+
+    e.dataTransfer.setData("text/plain", JSON.stringify(draggedCard));
+    console.log(e.dataTransfer.getData("text/plain"));
+  };
   const renderCard = (card) => {
     debugger;
     return (
@@ -38,9 +51,10 @@ export const ACard = (props) => {
         }}
         draggable="true"
         onDragStart={(e) => {
-          console.log('on drag start');
-          // drag(card[1], card[0], e);
-        }}>
+          console.log("on drag start");
+          drag(card[1], card[0], e);
+        }}
+      >
         {card[1].cardTitle}
         <div className={styles.cardContent}>
           <div>
@@ -63,7 +77,7 @@ export const ACard = (props) => {
   };
   return (
     <div>
-      <RenderArray item={cards} renderItem={renderCard} />
+      <RenderArray items={cards} renderItem={renderCard} />
     </div>
   );
 };

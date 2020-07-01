@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import styles from './Home.module.css';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Loader from '../../common/loader/Loader';
-import { db } from '../../service/firebase';
-import { RenderArray } from '../../common/RenderArray';
+import React, { useState, useEffect } from "react";
+import styles from "./Home.module.css";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Loader from "../../common/loader/Loader";
+import { db } from "../../service/firebase";
+import { RenderArray } from "../../common/RenderArray";
+import Axios from "axios";
 
 function Home() {
   const [boards, setBoards] = useState({});
   const [showBoard, setShowBoard] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  document.title = 'Pro Organizer';
+  document.title = "Pro Organizer";
   useEffect(() => {
     getBoardData();
   }, [showBoard]);
@@ -23,7 +24,7 @@ function Home() {
   // }, [boardData]);
 
   const getBoardData = () => {
-    db.ref('trello/boards').on('value', function (snapshot) {
+    db.ref("trello/boards").on("value", function (snapshot) {
       var childData = snapshot.val();
       setBoards(Object.entries(childData ?? {}));
       setIsLoading(false);
@@ -36,14 +37,15 @@ function Home() {
       // });
     });
   };
+  /** renderProp */
   const renderBoard = (board) => {
     return (
       <Link
         to={{
-          pathname: '/board/' + board[0],
-          state: { members: [3] },
-          // state: board[1],
-        }}>
+          pathname: "/board/" + board[0],
+          state: board[1],
+        }}
+      >
         <div className={styles.boardItem}>
           <h6 className={styles.boardHeader}> {board[1].boardName} </h6>
         </div>
@@ -53,7 +55,7 @@ function Home() {
   return (
     <div className={styles.boardContainer}>
       <h3 className={styles.header}>Boards</h3>
-      <div className={boards.length > 0 ? styles.boardList : ''}>
+      <div className={boards.length > 0 ? styles.boardList : ""}>
         <RenderArray
           loading={isLoading}
           renderItem={renderBoard}
